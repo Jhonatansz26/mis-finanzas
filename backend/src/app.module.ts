@@ -10,6 +10,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import { MainModule } from './main/main.module';
 import { CommonModule } from './common/common.module';
 import { AdminModule } from './admin/admin.module';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -19,6 +20,10 @@ import { AdminModule } from './admin/admin.module';
       load: [config],
       isGlobal: true,
     }),
+    ThrottlerModule.forRoot([{
+      ttl: 60000,
+      limit: 10,
+    }]),
     AuthModule,
     ToolsModule,
     ScheduleModule.forRoot(),

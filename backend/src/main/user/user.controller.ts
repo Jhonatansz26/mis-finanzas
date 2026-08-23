@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
   HttpException,
   HttpStatus,
@@ -9,6 +10,7 @@ import {
   Patch,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
@@ -46,10 +48,18 @@ export class UserController {
   }
 
   @Get(':id')
-  async getUserById(@Param('id') id: string) {
+  async getUserById(@Param('id') id: string, @Req() req: any) {
     try {
+      const currentUserId = req.user.sub;
+      const currentUserRole = req.user.role;
+      
+      if (currentUserId !== id && currentUserRole !== 'admin') {
+        throw new ForbiddenException('No tienes permiso para ver este perfil');
+      }
+      
       return this.userService.findById(id);
     } catch (error) {
+      if (error instanceof ForbiddenException) throw error;
       throw new HttpException(
         error.message || 'Error al obtener usuario',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
@@ -61,8 +71,6 @@ export class UserController {
   @Public()
   async register(@Body() newUser: CreateUserDto) {
     try {
-      console.log(newUser);
-
       return this.userService.create(newUser);
     } catch (error) {
       throw new HttpException(
@@ -76,10 +84,19 @@ export class UserController {
   async updateUser(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
+    @Req() req: any,
   ) {
     try {
+      const currentUserId = req.user.sub;
+      const currentUserRole = req.user.role;
+      
+      if (currentUserId !== id && currentUserRole !== 'admin') {
+        throw new ForbiddenException('No tienes permiso para actualizar este perfil');
+      }
+      
       return this.userService.update(id, updateUserDto);
     } catch (error) {
+      if (error instanceof ForbiddenException) throw error;
       throw new HttpException(
         error.message || 'Error al actualizar usuario',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,
@@ -88,10 +105,18 @@ export class UserController {
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
+  async deleteUser(@Param('id') id: string, @Req() req: any) {
     try {
+      const currentUserId = req.user.sub;
+      const currentUserRole = req.user.role;
+      
+      if (currentUserId !== id && currentUserRole !== 'admin') {
+        throw new ForbiddenException('No tienes permiso para eliminar este perfil');
+      }
+      
       return this.userService.delete(id);
     } catch (error) {
+      if (error instanceof ForbiddenException) throw error;
       throw new HttpException(
         error.message || 'Error al eliminar usuario',
         error.status || HttpStatus.INTERNAL_SERVER_ERROR,

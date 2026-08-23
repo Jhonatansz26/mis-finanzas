@@ -28,8 +28,6 @@ export class AuthService {
 
   async login(user: any, request?: any) {
     let connection: any | null = null;
-    console.log("este es el log");
-    console.log(user);
     
     try {
       connection = await this.pool.getConnection();

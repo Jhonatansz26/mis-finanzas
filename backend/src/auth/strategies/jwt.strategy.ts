@@ -7,6 +7,10 @@ import { JwtPayload } from '../models/token.model';
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(@Inject('MYSQL') private pool: any) {
+    const jwtKey = process.env.JWT_KEY;
+    if (!jwtKey) {
+      throw new Error('JWT_KEY environment variable is required');
+    }
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
@@ -16,9 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
           return request?.cookies?.access_token;
         },
       ]),
-      ignoreExpiration: true,
-      secretOrKey: process.env.JWT_KEY || 'no hay',
-
+      ignoreExpiration: false,
+      secretOrKey: jwtKey,
     });
   }
 
@@ -56,8 +59,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       if (error instanceof UnauthorizedException) {
         throw error;
       }
-      console.log(error);
-      
       throw new UnauthorizedException('Error al validar la sesión');
     }
   }

@@ -634,11 +634,9 @@ LEFT JOIN ventas_agregadas va ON pb.id = va.id;
        FROM configuracion_costos_fijos ccf 
        WHERE ccf.negocio_id = ? AND ccf.activo = true`,
         [businessId],
-      );
+       );
 
-      console.log(configCostosRows);
-
-      if (!configCostosRows || configCostosRows.length === 0) {
+       if (!configCostosRows || configCostosRows.length === 0) {
         throw new HttpException(
           'MISSING_FIXED_COSTS_CONFIG',
           HttpStatus.PRECONDITION_REQUIRED,
