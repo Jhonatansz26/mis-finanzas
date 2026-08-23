@@ -46,11 +46,6 @@ El frontend corre en `http://localhost:8082`
 Una vez corriendo el backend, accede a:
 `http://localhost:3000/api`
 
-## Credenciales de Prueba
-
-- **Email:** admin@gmail.com
-- **Contraseña:** 12345678
-
 ## Tecnologías
 
 ### Backend
@@ -75,6 +70,6 @@ Una vez corriendo el backend, accede a:
 - Costos fijos
 - Panel de control con métricas
 
-## Base de Datos
+## Licencia
 
-Tablas principales: users, sessions, negocios, departamentos, municipios, puntos_venta, productos, transacciones, detalle_transacciones, categorias_egresos, configuracion_costos_fijos
+Proyecto académico - SENA
