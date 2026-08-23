@@ -17,6 +17,19 @@ mis-finanzas/
 - npm
 - Cuenta en Supabase (base de datos PostgreSQL)
 
+## Descargar el Proyecto
+
+### Opción 1 - ZIP (para probar)
+1. Ir a https://github.com/Jhonatansz26/mis-finanzas
+2. Click en el botón verde **"Code"**
+3. Click en **"Download ZIP"**
+4. Descomprimir el archivo
+
+### Opción 2 - Git Clone (para trabajar en equipo)
+```bash
+git clone https://github.com/Jhonatansz26/mis-finanzas.git
+```
+
 ## Cómo Correr el Proyecto
 
 ### 1. Backend
