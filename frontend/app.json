@@ -1,0 +1,60 @@
+{
+  "expo": {
+    "name": "Mis Finanzas",
+    "slug": "cash-popular",
+    "version": "1.0.1",
+    "orientation": "portrait",
+    "icon": "./assets/icono2.png",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "icon": "./assets/icono2.png",
+      "infoPlist": {
+        "UIFileSharingEnabled": true,
+        "LSSupportsOpeningDocumentsInPlace": true,
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
+      }
+    },
+    "android": {
+      "icon": "./assets/icono2.png",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "permissions": [
+        "WRITE_EXTERNAL_STORAGE", 
+        "READ_EXTERNAL_STORAGE",
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ],
+      "package": "com.el.b0ni.cashpopular",
+      "usesCleartextTraffic": true
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": ["expo-router", "expo-secure-store", "expo-font"],
+    "scheme": "cash-popular",
+    "sdkVersion": "54.0.0",
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "a4593198-b61a-4881-a5c8-c7f6c9f051a0"
+      }
+    },
+    "overrides": {
+      "react-native-appwrite": {
+        "expo-file-system": "18.*.*",
+        "react-native": ">=0.76.7 <1.0.0"
+      }
+    }
+  }
+}
