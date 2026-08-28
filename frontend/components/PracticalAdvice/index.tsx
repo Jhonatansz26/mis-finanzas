@@ -1,19 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, { useRef } from "react";
 import {
-  Text,
-  View,
-  StyleSheet,
-  ScrollView,
+  Animated,
   Dimensions,
+  ScrollView,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 
 const { width: screenWidth } = Dimensions.get("window");
 const cardWidth = screenWidth - 80; // Permite ver parte de la siguiente tarjeta
+const cardMargin = 10;
+const slideSize = cardWidth + cardMargin;
 
 function PracticalAdviceCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const scrollViewRef: any = useRef(null);
+  const scrollX = useRef(new Animated.Value(0)).current;
+  const scrollViewRef = useRef<any>(null);
 
   // Datos simulados - en tu app real vendrían de props o estado
   const businessData = {
@@ -85,22 +88,14 @@ function PracticalAdviceCarousel() {
     getROIAdvice(),
   ];
 
-  const handleScroll = (event: any) => {
-    const slideSize = cardWidth + 12; // card width + margin
-    const index = Math.round(event.nativeEvent.contentOffset.x / slideSize);
-    setCurrentIndex(index);
-  };
-
-  const goToSlide = (index: any) => {
-    const slideSize = cardWidth + 12;
+  const goToSlide = (index: number) => {
     scrollViewRef.current?.scrollTo({
       x: slideSize * index,
       animated: true,
     });
-    setCurrentIndex(index);
   };
 
-  const renderAdviceCard = (config: any, index: any) => {
+  const renderAdviceCard = (config: any, index: number) => {
     const {
       emoji,
       title,
@@ -136,16 +131,50 @@ function PracticalAdviceCarousel() {
   const renderIndicators = () => {
     return (
       <View style={styles.indicatorContainer}>
-        {adviceCards.map((_, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.indicator,
-              currentIndex === index && styles.activeIndicator,
-            ]}
-            onPress={() => goToSlide(index)}
-          />
-        ))}
+        {adviceCards.map((_, index) => {
+          const inputRange = [
+            (index - 1) * slideSize,
+            index * slideSize,
+            (index + 1) * slideSize,
+          ];
+
+          const dotWidth = scrollX.interpolate({
+            inputRange,
+            outputRange: [8, 24, 8],
+            extrapolate: "clamp",
+          });
+
+          const opacity = scrollX.interpolate({
+            inputRange,
+            outputRange: [0.4, 1, 0.4],
+            extrapolate: "clamp",
+          });
+
+          const backgroundColor = scrollX.interpolate({
+            inputRange,
+            outputRange: ["#CBD5E1", "#3B82F6", "#CBD5E1"],
+            extrapolate: "clamp",
+          });
+
+          return (
+            <TouchableOpacity
+              key={index}
+              activeOpacity={0.8}
+              onPress={() => goToSlide(index)}
+            >
+              <Animated.View
+                style={[
+                  styles.indicator,
+                  {
+                    width: dotWidth,
+                    opacity,
+                    backgroundColor,
+                  },
+                ]}
+              />
+            </TouchableOpacity>
+          );
+        })}
       </View>
     );
   };
@@ -156,21 +185,25 @@ function PracticalAdviceCarousel() {
         <Text style={styles.headerTitle}>💡 Consejos Prácticos</Text>
       </View>
 
-      <ScrollView
+      <Animated.ScrollView
         ref={scrollViewRef}
         horizontal
         pagingEnabled={false}
         showsHorizontalScrollIndicator={false}
-        onMomentumScrollEnd={handleScroll}
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { x: scrollX } } }],
+          { useNativeDriver: false }
+        )}
+        scrollEventThrottle={16}
         decelerationRate="fast"
-        snapToInterval={cardWidth + 12}
-        snapToAlignment="center"
+        snapToInterval={slideSize}
+        snapToAlignment="start"
         contentContainerStyle={styles.scrollContainer}
         style={styles.scrollView}
         contentInsetAdjustmentBehavior="never"
       >
         {adviceCards.map((advice, index) => renderAdviceCard(advice, index))}
-      </ScrollView>
+      </Animated.ScrollView>
 
       {renderIndicators()}
     </View>
@@ -204,7 +237,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 18,
     borderRadius: 16,
-    marginRight: 10,
+    marginRight: cardMargin,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.06,
@@ -253,18 +286,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginTop: 16,
+    height: 12,
   },
   indicator: {
-    width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#CBD5E1",
     marginHorizontal: 4,
-  },
-  activeIndicator: {
-    backgroundColor: "#3B82F6",
-    width: 32,
-    height: 8,
   },
 });
 

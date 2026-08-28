@@ -103,11 +103,11 @@ function SummaryDay({ data, loading }: any) {
                   { backgroundColor: "#D1FAE5" },
                 ]}
               >
-                <SkeletonBox width={16} height={16} />
+                <SkeletonBox width={14} height={14} />
               </View>
-              <SkeletonBox width={50} height={14} />
+              <SkeletonBox width={45} height={14} />
             </View>
-            <SkeletonBox width={60} height={18} />
+            <SkeletonBox width={55} height={18} />
           </View>
 
           <View style={[styles.containerInfo, styles.expensesCard]}>
@@ -118,11 +118,11 @@ function SummaryDay({ data, loading }: any) {
                   { backgroundColor: "#FECACA" },
                 ]}
               >
-                <SkeletonBox width={16} height={16} />
+                <SkeletonBox width={14} height={14} />
               </View>
-              <SkeletonBox width={50} height={14} />
+              <SkeletonBox width={45} height={14} />
             </View>
-            <SkeletonBox width={60} height={18} />
+            <SkeletonBox width={55} height={18} />
           </View>
 
           <View style={[styles.containerInfo, styles.unitsCard]}>
@@ -133,11 +133,11 @@ function SummaryDay({ data, loading }: any) {
                   { backgroundColor: "#E9D5FF" },
                 ]}
               >
-                <SkeletonBox width={16} height={16} />
+                <SkeletonBox width={14} height={14} />
               </View>
-              <SkeletonBox width={60} height={14} />
+              <SkeletonBox width={45} height={14} />
             </View>
-            <SkeletonBox width={30} height={18} />
+            <SkeletonBox width={55} height={18} />
           </View>
         </View>
       </View>
@@ -179,7 +179,7 @@ function SummaryDay({ data, loading }: any) {
             </View>
             <Text style={styles.labelCard}>Ventas</Text>
           </View>
-          <Text style={styles.valueCard}>
+          <Text style={styles.valueCard} numberOfLines={1} adjustsFontSizeToFit>
             {formatCurrency(data.totalIngresos)}
           </Text>
         </View>
@@ -193,7 +193,7 @@ function SummaryDay({ data, loading }: any) {
             </View>
             <Text style={styles.labelCard}>Gastos</Text>
           </View>
-          <Text style={styles.valueCard}>
+          <Text style={styles.valueCard} numberOfLines={1} adjustsFontSizeToFit>
             {formatCurrency(data.totalEgresos)}
           </Text>
         </View>
@@ -207,7 +207,7 @@ function SummaryDay({ data, loading }: any) {
             </View>
             <Text style={styles.labelCard}>Unidades</Text>
           </View>
-          <Text style={styles.valueCard}>
+          <Text style={styles.valueCard} numberOfLines={1} adjustsFontSizeToFit>
             {formatUnits(data.totalProductosVendidos)}
           </Text>
         </View>
@@ -285,11 +285,13 @@ const styles = StyleSheet.create({
   },
   contentSummaryDay: {
     flexDirection: "row",
-    justifyContent: "space-evenly",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    gap: 10,
   },
   containerInfo: {
-    minHeight: 80,
-    width: 109,
+    flex: 1,
+    height: 84,
     borderRadius: 12,
     padding: 12,
     justifyContent: "space-between",
@@ -314,11 +316,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     justifyContent: "center",
     alignItems: "center",
-    marginRight: 8,
+    marginRight: 6,
   },
   labelCard: {
-    fontSize: 14,
-    fontWeight: "400",
+    fontSize: 13,
+    fontWeight: "500",
     color: "#666",
   },
   valueCard: {
