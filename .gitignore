@@ -32,6 +32,7 @@ coverage/
 
 # OpenCode
 opencode.json
+.playwright-mcp/
 
 # Sensitive files
 backend/dump_completo.sql
